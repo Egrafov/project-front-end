@@ -1,20 +1,15 @@
-import React from "react";
-import { useState } from "react";
-import { DefaultButton } from "@fluentui/react/lib/Button";
-
+import React, { useContext } from "react";
 import { ImUser, ImBin, ImHeart } from "react-icons/im";
 import { FaSearch, FaFacebook, FaInstagram } from "react-icons/fa";
-import { TooltipHost, ITooltipHostStyles } from "@fluentui/react/lib/Tooltip";
 import { useId } from "@fluentui/react-hooks";
-import axios from "axios";
-import { Link } from "react-router-dom";
-// import ProductCard from "./ProductCard";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import "./styles.css";
 import { Title } from "./pages/AdminPage";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import styled from "styled-components";
 import { MyFooter } from "./components/MyFooter";
+import { UserContext } from "./Routes";
 initializeIcons();
 
 const calloutProps = { gapSpace: 0 };
@@ -26,6 +21,9 @@ const hostStyles = {
 
 const Header = () => {
   // axios.get("http://127.0.0.1:8080/products").then((s) => console.log(s));
+  const loggedInUser = useContext(UserContext);
+  console.log("products loggedInUser");
+  console.log(loggedInUser);
   return (
     <header
       style={{
@@ -48,79 +46,75 @@ const Header = () => {
             listStyle: "none",
             display: "flex",
             gap: "20px",
-            justifyContent: "flex-start",
-            alignItems: "center",
+            justifyContent: "flex-end",
+            alignItems: "right",
             color: "#d69987",
+            marginLeft: "20px",
+            position: "relative",
+            fontFamily: "Segoe UI",
+            fontSize: "16px",
+            fontWeight: "600",
           }}
         >
-          <NavItem link="/login" label="Login/Signup" />
-          <ImUser />
-          <NavItem link="/products" label="Wishlist" />
-          <ImHeart />
-          <NavItem link="/bag" label="Count of Items in Bag" />
-          {/* <IconWithCount initialValue={5} /> */}
-          <ImBin />
+          {loggedInUser ? (
+            <div>
+              Hello {loggedInUser.firstName}
+              {loggedInUser && loggedInUser.isAdmin && " You're ADMIN !!!"}
+            </div>
+          ) : (
+            <>
+              <NavLink to="/login" color="#886863">
+                Login/Signup
+              </NavLink>
+              <ImUser />
+            </>
+          )}
+          {/* <NavLink to="/products" title="Wishlist" color="#886863" />
+          <a
+            href="/login"
+            style={{
+              color: "#d69987",
+            }}
+          >
+            <ImHeart />
+          </a>
+          <NavLink to="/bag" title="Items in Bag" color="#886863" />
+          <a
+            href="/login"
+            style={{
+              color: "#d69987",
+            }}
+          >
+            <ImBin />
+          </a> */}
         </ul>
       </div>
       <SecondaryNav />
     </header>
   );
 };
-// const IconWithCount = ({ initialValue }: { initialValue: number }) => {
-//   const [count, setCount] = useState<number>(initialValue);
 
-//   const incrementCount = () => {
-//     setCount(count + 1);
-//   };
-
-//   const decrementCount = () => {
-//     if (count > 0) {
-//       setCount(count - 1);
-//     }
-//   };
-
-// return (
-//   <div style={{ position: "relative" }}>
-//     <ImBin />
-//     {count > 0 && (
-//       <span
-//         style={{
-//           position: "absolute",
-//           top: "-8px",
-//           right: "-8px",
-//           backgroundColor: "red",
-//           color: "white",
-//           borderRadius: "50%",
-//           padding: "4px",
-//           fontSize: "12px",
-//         }}
-//       >
-//         {count}
-//       </span>
-//     )}
-//     <button onClick={incrementCount}>+</button>
-//     <button onClick={decrementCount}>-</button>
-//   </div>
-// );
-// };
-const SearchBar = () => {
+export const SearchBar = () => {
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div style={{ display: "flex", alignItems: "center", flexGrow: "1" }}>
       <input
         type="text"
         placeholder="Search by id or name"
-        style={{ marginRight: "10px", padding: "5px" }}
+        style={{
+          marginRight: "10px",
+          marginLeft: "20px",
+          padding: "5px",
+          color: "#886863",
+        }}
       />
-      <FaSearch />
+      <FaSearch style={{ color: "#886863" }} />
     </div>
   );
 };
 
-const NavItem = ({ link, label }: { link: string; label: string }) => {
-  return <a href={link}>{label}</a>;
-};
-
 const SecondaryNav = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <nav
@@ -128,6 +122,7 @@ const SecondaryNav = () => {
           display: "flex",
           justifyContent: "flex-start",
           alignItems: "center",
+          color: "#886863",
         }}
       >
         <ul
@@ -136,25 +131,42 @@ const SecondaryNav = () => {
             display: "flex",
             gap: "20px",
             alignItems: "center",
-            color: "#876863",
+
+            padding: "0",
+            margin: "0",
+            fontFamily: "Segoe UI",
+            fontSize: "16px",
+            fontWeight: "600",
+            color: "#886863",
           }}
         >
-          <NavItem link="/products/:category" label="Categories" />
-          <NavItem link="/bestSellers" label="Best Sellers" />
-          <NavItem link="/sales" label="Hot sales" />
-          <NavItem link="/newIn" label="New In" />
-          <NavItem link="/aboutUs" label="About Us" />
-          <NavItem link="/contact" label="Contact Us" />
-          <li>
-            <a href="https://www.facebook.com/tanya.grafova">
-              <FaFacebook />
-            </a>
-          </li>
-          <li>
-            <a href="https://instagram.com/tetiana.grafova?igshid=MzRlODBiNWFlZA==">
-              <FaInstagram />
-            </a>
-          </li>
+          <NavLink to={"/products"} style={{ color: "#886863" }}>
+            Products
+          </NavLink>
+          <NavLink to={"/aboutUs"} style={{ color: "#886863" }}>
+            About us
+          </NavLink>
+          <NavLink
+            to="/contactUs"
+            title="Contact Us"
+            style={{ color: "#886863" }}
+          >
+            Contact us
+          </NavLink>
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://www.facebook.com/tanya.grafova"
+          >
+            <FaFacebook style={{ color: "blue" }} />
+          </a>
+          <a
+            rel="noreferrer"
+            target="_blank"
+            href="https://instagram.com/tetiana.grafova?igshid=MzRlODBiNWFlZA=="
+          >
+            <FaInstagram />
+          </a>
         </ul>
       </nav>
     </div>
@@ -185,9 +197,9 @@ const MainSection = () => {
           alignItems: "center",
         }}
       >
-        {/* <Image src="pictures/9.jpg" alt="picture" />
+        <Image src="pictures/9.jpg" alt="picture" />
         <Image src="pictures/N.jpg" alt="picture" />
-        <Image src="pictures/5.jpeg" alt="picture" /> */}
+        <Image src="pictures/5.jpeg" alt="picture" />
       </div>
       <div
         style={{
@@ -203,17 +215,14 @@ const MainSection = () => {
       <div
         className="collectionList"
         style={{
-          // overflow: "inherit",
-          // whiteSpace: "normal",
           flexWrap: "wrap",
-          // listStyle: "none",
           display: "flex",
           justifyContent: "center",
         }}
       >
         <div className="picture and label">
           <div className="CollectionImage">
-            <CategoriesImage src="pictures/1.png" alt="picture" />
+            <CategoriesImage src="pictures/12.jpeg" alt="picture" />
           </div>
 
           <Link
@@ -237,7 +246,7 @@ const MainSection = () => {
               alignItems: "center",
             }}
           >
-            <CategoriesImage src="pictures/1.png" alt="picture" />
+            <CategoriesImage src="pictures/15.jpeg" alt="picture" />
           </div>
           <Link
             to="/products/moshe"
@@ -260,7 +269,7 @@ const MainSection = () => {
               alignItems: "center",
             }}
           >
-            <CategoriesImage src="pictures/1.png" alt="picture" />
+            <CategoriesImage src="pictures/6.jpeg" alt="picture" />
           </div>
           <Link
             to="/products/moshe"
@@ -283,7 +292,7 @@ const MainSection = () => {
               alignItems: "center",
             }}
           >
-            <CategoriesImage src="pictures/1.png" alt="picture" />
+            <CategoriesImage src="pictures/14.jpeg" alt="picture" />
           </div>
           <Link
             to="/products/moshe"
@@ -302,7 +311,12 @@ const MainSection = () => {
   );
 };
 
-const Image = ({ src, alt, style }) => {
+interface ImageProps {
+  src: string;
+  alt: string;
+  style?: any;
+}
+const Image: React.FC<ImageProps> = ({ src, alt, style }) => {
   return (
     <img
       src={src}
@@ -311,12 +325,19 @@ const Image = ({ src, alt, style }) => {
     />
   );
 };
-const CategoriesImage = ({ src, alt, style }) => {
+
+const CategoriesImage: React.FC<ImageProps> = ({ src, alt, style }) => {
   return (
     <img
       src={src}
       alt={alt}
-      style={{ width: "300px", height: "200px", ...style }}
+      style={{
+        width: "400px",
+        height: "300px",
+        padding: "20px",
+        margin: "30px",
+        ...style,
+      }}
     />
   );
 };
@@ -333,16 +354,16 @@ export const MyComponent = () => {
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
-      <div>
-        <TooltipHost
-          content={"This is the tooltip content"}
-          // This id is used on the tooltip itself, not the host
-          // (so an element with this id only exists when the tooltip is shown)
-          id={tooltipId}
-          calloutProps={calloutProps}
-          styles={hostStyles}
-        ></TooltipHost>
-      </div>
+      {/* <TooltipHost
+        content={"This is the tooltip content"}
+        // This id is used on the tooltip itself, not the host
+        // (so an element with this id only exists when the tooltip is shown)
+        id={tooltipId}
+        // calloutProps={calloutProps}
+        // styles={hostStyles}
+      >
+        <div>Test</div>
+      </TooltipHost> */}
 
       <div style={{ flex: 1 }}>
         <Header />

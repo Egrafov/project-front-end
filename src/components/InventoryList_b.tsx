@@ -126,7 +126,7 @@ export class DetailsListBasicExample extends React.Component<
 
   private _onFilter = (
     ev: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>,
-    text: string
+    text: string | undefined
   ): void => {
     this.setState({
       items: text

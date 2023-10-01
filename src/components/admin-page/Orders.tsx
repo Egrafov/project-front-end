@@ -6,7 +6,7 @@ import {
   DetailsListLayoutMode,
   SelectionMode,
 } from "@fluentui/react";
-import { CollapsibleSectionWithTitle } from "../common/collapsible-section";
+import { CollapsibleSectionWithTitle } from "../common/CollapsibleSection";
 import {
   Dropdown,
   IDropdownStyles,
@@ -30,7 +30,7 @@ interface Order {
   status: OrderStatus;
 }
 
-export const Orders = () => {
+export const Orders: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const fetchOrders = () => {
     axios
@@ -102,10 +102,9 @@ export const Orders = () => {
               onRender: (order: Order) => (
                 <OrderStatusField
                   order={order}
-                  onStatusChange={(newStatus: string) => {
-                    const update = orders.find((o) => o.id === order.id)!;
-                    update["status"] = newStatus as OrderStatus;
-                  }}
+                  onStatusChange={(newStatus: string) =>
+                    (order["status"] = newStatus as OrderStatus)
+                  }
                 />
               ),
               minWidth: 50,

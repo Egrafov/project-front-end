@@ -52,4 +52,6 @@
   .product-card__btn-wishlist svg {
     fill: lightgrey;
   }
-  
+  .product-card__btn-wishlist.clicked{
+    background-color: palevioletred ;
+  } 
