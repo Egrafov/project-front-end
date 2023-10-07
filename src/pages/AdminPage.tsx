@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "@fluentui/react";
 import styled from "styled-components";
 import { Orders } from "../components/admin-page/Orders";
 import { Inventory } from "../components/admin-page/Inventory";
 import { CreateProduct } from "../components/admin-page/CreateProduct";
+import { NavLink } from "react-router-dom";
 
 export const AdminPage = () => {
   // const [iconNameOrder, setIconNameOrder] = useState<string>("ChevronDown");
@@ -69,7 +69,16 @@ export const AdminPage = () => {
     <div>
       <Wrapper>
         <Title>Admin Page</Title>
-        <Link href="/">Home</Link>
+        <NavLink
+          to={"/"}
+          style={{
+            color: "#d69987",
+            fontSize: "16px",
+            fontWeight: "600",
+          }}
+        >
+          Shopping
+        </NavLink>
       </Wrapper>
       <CreateProduct />
       <Inventory />

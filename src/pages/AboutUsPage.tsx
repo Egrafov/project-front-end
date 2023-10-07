@@ -1,58 +1,47 @@
-import {
-  DefaultButton,
-  DetailsList,
-  DetailsListLayoutMode,
-  Link,
-} from "@fluentui/react";
-import React, { useState } from "react";
 import styled from "styled-components";
-import { StyledDiv, SubTitle, SuccessMessage, Title } from "./AdminPage";
-import axios from "axios";
-import { Logo } from "../App";
+import { SubTitle, Title } from "./AdminPage";
 import { MyFooter } from "../components/MyFooter";
 
-export const AboutUsPage = () => {
-  return (
-    <>
-      <Title> Gelix</Title>
-      <SubTitle> About us</SubTitle>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "80vh",
-          flexDirection: "row",
-        }}
-      >
-        <img
-          src="pictures/9.jpg"
-          alt=""
-          style={{ marginBottom: "20px", width: "30%", margin: "20px" }}
-        />
-        <Text>
-          At Gelix Store online, you will find an amazing resource for high
-          quality nail art supplies to support your business. We provide a
-          variety of cutting-edge nail salon supplies and accessories for both
-          classic looks and the latest trends. Find everything you need to
-          expand your product line, or start up a new salon. Some of our
-          best-selling products include those from our Skylux line, the world's
-          first LED gel system, and those from our Nail de Dance line, the #1
-          selling acrylic system in Ukraine.
-          <br />
-          Our products are tested and curated for performance and ease-of-use.
-          <br />
-          We are always looking to improve our company and welcome feedback from
-          you, our valued customers, the best way for us to meet your needs is
-          to know specifically what you want, so please don't hesitate to leave
-          your comments or questions.
-        </Text>
-      </div>
+export const AboutUsPage = () => (
+  <>
+    <Title>Gelix</Title>
+    <SubTitle>About us</SubTitle>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "80vh",
+        flexDirection: "row",
+      }}
+    >
+      <img
+        src="pictures/9.jpg"
+        alt=""
+        style={{ marginBottom: "20px", width: "30%", margin: "20px" }}
+      />
+      <Text>
+        At Gelix Store online, you will find an amazing resource for high
+        quality nail art supplies to support your business. We provide a variety
+        of cutting-edge nail salon supplies and accessories for both classic
+        looks and the latest trends. Find everything you need to expand your
+        product line, or start up a new salon. Some of our best-selling products
+        include those from our Skylux line, the world's first LED gel system,
+        and those from our Nail de Dance line, the #1 selling acrylic system in
+        Ukraine.
+        <br />
+        Our products are tested and curated for performance and ease-of-use.
+        <br />
+        We are always looking to improve our company and welcome feedback from
+        you, our valued customers, the best way for us to meet your needs is to
+        know specifically what you want, so please don't hesitate to leave your
+        comments or questions.
+      </Text>
+    </div>
+    <MyFooter />
+  </>
+);
 
-      <MyFooter />
-    </>
-  );
-};
 export const Text = styled.div`
   color: rgb;
   text-overflow: ellipsis;

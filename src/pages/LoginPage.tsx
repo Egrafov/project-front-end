@@ -1,4 +1,4 @@
-import { DefaultButton } from "@fluentui/react";
+import { DefaultButton, IButtonStyles } from "@fluentui/react";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ErrorMessage, StyledDiv, SubTitle, SuccessMessage } from "./AdminPage";
@@ -32,7 +32,6 @@ export const LoginPage: React.FC<{
   const [lastName, setLastName] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [address, setAddress] = useState<string>("");
-  const [isSavedSuccess, setIsSavedSuccess] = useState(false);
   const [isCreatingUser, setIsCreatingUser] = useState(false);
   const [isUserCreated, setIsUserCreated] = useState(false);
   const [isLoginSuccess, setIsLoginSuccess] = useState(false);
@@ -42,36 +41,25 @@ export const LoginPage: React.FC<{
   const navigate = useNavigate();
 
   return (
-    <>
+    <div style={{ display: "flex", flexFlow: "column nowrap" }}>
+      {/* <div>Title</div> */}
       <div
         style={{
           display: "flex",
-          alignItems: "center",
           justifyContent: "center",
+          fontWeight: 600,
         }}
       >
-        {isSavedSuccess}
         <form>
           <Border>
             <SubTitle>Sign in</SubTitle>
-            <StyledDiv
+            <div
               style={{
-                flexWrap: "wrap",
                 display: "flex",
                 flexDirection: "column",
-                fontWeight: 600,
-                justifyContent: "spaceBetween",
-                alignItems: "selfEnd",
-                flexGrow: 10,
-                marginTop: "10px",
-                minWidth: "80px",
-                maxWidth: "600px",
-                flex: "auto",
-                width: "100%",
-                margin: "5px",
               }}
             >
-              <label>
+              <label style={{ paddingTop: 5 }}>
                 Email or user name:
                 <StyledInput
                   type="text"
@@ -80,7 +68,7 @@ export const LoginPage: React.FC<{
                 />
               </label>
 
-              <label>
+              <label style={{ paddingTop: 5, paddingBottom: 15 }}>
                 Password:
                 <StyledInput
                   type="password"
@@ -88,19 +76,9 @@ export const LoginPage: React.FC<{
                   onChange={(e: any) => setPasswordLogin(e.target.value)}
                 />
               </label>
-            </StyledDiv>
+            </div>
             <DefaultButton
-              styles={{
-                root: {
-                  marginTop: "10px",
-                  minWidth: "80px",
-                  maxWidth: "600px",
-                  flex: "auto",
-                  width: "100%",
-                  margin: "5px",
-                  fontWeight: 600,
-                },
-              }}
+              styles={buttonStyle}
               onClick={() => {
                 axios
                   .post(
@@ -125,7 +103,7 @@ export const LoginPage: React.FC<{
                   });
               }}
             >
-              Login{" "}
+              Login
             </DefaultButton>
             {isLoginSuccess && (
               <SuccessMessage>Login successfully!</SuccessMessage>
@@ -138,35 +116,24 @@ export const LoginPage: React.FC<{
             )}
             <Discription>New customer? Start here</Discription>
             <DefaultButton
-              styles={{
-                root: {
-                  marginTop: "10px",
-                  minWidth: "80px",
-                  maxWidth: "600px",
-                  flex: "auto",
-                  width: "100%",
-                  margin: "5px",
-                  fontWeight: 600,
-                },
-              }}
+              styles={buttonStyle}
               onClick={() => setIsCreatingUser(true)}
             >
-              Create your Gelix account{" "}
+              Create your Gelix account
             </DefaultButton>
           </Border>
           {isCreatingUser && (
             <Border>
-              <StyledDiv
+              <div
                 style={{
                   flexWrap: "wrap",
                   display: "flex",
                   flexDirection: "column",
-
                   width: "100%",
                 }}
               >
                 <SubTitle>Create account</SubTitle>
-                <label>
+                <label style={{ paddingTop: 5 }}>
                   User Name:
                   <StyledInput
                     type="text"
@@ -174,7 +141,7 @@ export const LoginPage: React.FC<{
                     onChange={(e: any) => setUserName(e.target.value)}
                   />
                 </label>
-                <label>
+                <label style={{ paddingTop: 5 }}>
                   Password:
                   <StyledInput
                     type="password"
@@ -182,7 +149,7 @@ export const LoginPage: React.FC<{
                     onChange={(e: any) => setPassword(e.target.value)}
                   />
                 </label>
-                <label>
+                <label style={{ paddingTop: 5 }}>
                   First Name:
                   <StyledInput
                     type="text"
@@ -190,8 +157,7 @@ export const LoginPage: React.FC<{
                     onChange={(e: any) => setFirstName(e.target.value)}
                   />
                 </label>
-
-                <label>
+                <label style={{ paddingTop: 5 }}>
                   Last Name:
                   <StyledInput
                     type="text"
@@ -199,15 +165,14 @@ export const LoginPage: React.FC<{
                     onChange={(e: any) => setLastName(e.target.value)}
                   />
                 </label>
-
-                <label>
+                <label style={{ paddingTop: 5 }}>
                   Phone:
                   <StyledInput
                     value={phone}
                     onChange={(e: any) => setPhone(e.target.value)}
                   />
                 </label>
-                <label>
+                <label style={{ paddingTop: 5, paddingBottom: 15 }}>
                   Address:
                   <StyledInput
                     value={address}
@@ -215,7 +180,7 @@ export const LoginPage: React.FC<{
                   />
                 </label>
                 <DefaultButton
-                  styles={{ root: { marginTop: "10px" } }}
+                  styles={buttonStyle}
                   text="Create new user"
                   onClick={async () => {
                     if (
@@ -236,7 +201,6 @@ export const LoginPage: React.FC<{
                     try {
                       salt = await bcrypt.genSalt(10);
                       hashPassword = await bcrypt.hash(password, salt);
-                      console.log("Hashed password:", hashPassword);
                     } catch (error) {
                       alert("Error hashing password: " + error);
                     }
@@ -256,7 +220,6 @@ export const LoginPage: React.FC<{
                         { headers: { "Content-Type": "application/json" } }
                       )
                       .then((s) => {
-                        setIsSavedSuccess(true);
                         setIsUserCreated(true);
                         setIsCreatingUser(false);
                         setRegisterErrorMessage("");
@@ -274,7 +237,7 @@ export const LoginPage: React.FC<{
                 {registerErrorMessage && (
                   <ErrorMessage>{registerErrorMessage}</ErrorMessage>
                 )}
-              </StyledDiv>
+              </div>
             </Border>
           )}
           {isUserCreated && (
@@ -283,25 +246,29 @@ export const LoginPage: React.FC<{
         </form>
       </div>
       <MyFooter />
-    </>
+    </div>
   );
 };
 
-const Border = styled.h1`
+const buttonStyle: IButtonStyles = {
+  root: {
+    width: "100%",
+    fontWeight: 600,
+  },
+};
+
+const Border = styled.div`
   border: 2px solid lightgrey;
   width: 400px;
-  height: auto;
   padding: 50px;
   margin: 5px;
   border-radius: 8px;
 `;
 
 const Discription = styled.div`
-  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
-    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
   padding-top: 20px;
+  padding-bottom: 3px;
   color: blue;
 `;

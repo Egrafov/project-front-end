@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { HomePage } from "./pages/HomePage";
 import { ListOfProductsPage } from "./pages/ListOfProductsPage";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import { AdminPage } from "./pages/AdminPage";
-import React, { createContext, useState } from "react";
+import { createContext, useState } from "react";
 import { LoginPage } from "./pages/LoginPage";
 import { AboutUsPage } from "./pages/AboutUsPage";
+import { initializeIcons } from "@fluentui/react";
+initializeIcons();
 
 export const UserContext = createContext<LoggedUser | null>(null);
 
@@ -22,10 +23,8 @@ export const MainRoutes = () => {
     <UserContext.Provider value={loggedUser}>
       <Router>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/products" element={<ListOfProductsPage />} />
+          <Route path="/" element={<ListOfProductsPage />} />
           <Route path="/admin" element={<AdminPage />} />
-
           <Route
             path="/login"
             element={

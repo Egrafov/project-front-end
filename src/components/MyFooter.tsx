@@ -10,6 +10,7 @@ export const MyFooter: React.FC = () => (
 const StyledDCopyrightFooter = styled.div`
   color: #886863;
   background-color: #f3d3d8;
+  margin-top: auto;
   padding: 10px;
   text-align: center;
 `;

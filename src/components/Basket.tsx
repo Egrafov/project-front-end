@@ -1,9 +1,4 @@
-import {
-  DefaultButton,
-  DetailsList,
-  DetailsListLayoutMode,
-  SelectionMode,
-} from "@fluentui/react";
+import { DefaultButton, DetailsList, SelectionMode } from "@fluentui/react";
 import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { InventoryProduct } from "../components/admin-page/Inventory";
@@ -36,11 +31,11 @@ export const Basket: React.FC<{
       item.count += 1;
       item.totalPrice += p.price;
     });
-    console.log(basketMap);
     setTotalPrice(tmpTotoalPrice);
     setBasketList(Array.from(basketMap.values()));
   }, [basketItems]);
 
+  console.log(loggedInUser);
   return (
     <div
       style={{
@@ -100,16 +95,10 @@ export const Basket: React.FC<{
               onRender: (items) => <>{items.totalPrice.toFixed(2)}</>,
             },
           ]}
-          setKey="set"
-          layoutMode={DetailsListLayoutMode.justified}
-          // selection={this._selection}
-          selectionPreservedOnEmptyClick={true}
-          // onItemInvoked={this._onItemInvoked}
         />
       )}
 
       <div style={{ paddingTop: 13, paddingBottom: 9 }}>
-        {" "}
         Total: {totalPrice.toFixed(2)} $
       </div>
       <DefaultButton
@@ -120,14 +109,13 @@ export const Basket: React.FC<{
           axios
             .post("http://localhost:8080/orders/newOrder", {
               orderDate: new Date(),
-              userName: "21",
-              // totalSum: calculateTotal(),
-              totalSum: 2,
-              address: "address",
-              productQuantities: [
-                { productId: 3, quantity: 2 },
-                { productId: 4, quantity: 2 },
-              ],
+              userName: loggedInUser?.firstName,
+              totalSum: totalPrice,
+              address: loggedInUser?.address,
+              productQuantities: basketList.map((item) => ({
+                productId: item.id,
+                quantity: item.count,
+              })),
             })
             .then((s) => {
               console.log("Response new order data:", s.data);

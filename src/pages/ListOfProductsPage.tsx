@@ -1,6 +1,6 @@
-import { DefaultButton, Link } from "@fluentui/react";
+import { DefaultButton, Link, initializeIcons } from "@fluentui/react";
 import { ProductCard } from "../ProductCard/ProductCard";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { MyFooter } from "../components/MyFooter";
 import { SubTitle, SuccessMessage, Title } from "./AdminPage";
@@ -10,9 +10,13 @@ import { styled } from "styled-components";
 import { InventoryProduct } from "../components/admin-page/Inventory";
 import { Basket, BasketItem } from "../components/Basket";
 import { NavLink } from "react-router-dom";
+import { UserContext } from "../Routes";
+import { ImUser } from "react-icons/im";
 
 export const ListOfProductsPage = () => {
   // const [isSavedSuccess, setIsSavedSuccess] = useState(false);
+  const loggedInUser = useContext(UserContext);
+
   const [inventory, setInventory] = useState<InventoryProduct[]>([]);
   const fetchInventory = () => {
     axios
@@ -75,7 +79,7 @@ export const ListOfProductsPage = () => {
             alignItems: "center",
           }}
         >
-          <Title style={{ paddingRight: "20px" }}>Products</Title>
+          <Title style={{ paddingRight: "20px" }}>Gelix</Title>
           <SearchComponent onSearchChange={onSearchChange} />
         </div>
         <div
@@ -85,17 +89,29 @@ export const ListOfProductsPage = () => {
             alignItems: "center",
           }}
         >
-          <NavLink
-            to="/"
-            style={{
-              fontSize: "16px",
-              fontWeight: "600",
-              paddingRight: "20px",
-              color: "#886863",
-            }}
-          >
-            Home Page
-          </NavLink>
+          {loggedInUser ? (
+            <div style={{ paddingLeft: 10, paddingRight: 15, fontSize: 18 }}>
+              Hello {loggedInUser.firstName}
+              {loggedInUser.isAdmin && (
+                <NavLink to={"/admin"}>Admin page</NavLink>
+              )}
+            </div>
+          ) : (
+            <div
+              style={{
+                paddingLeft: 10,
+                paddingRight: 15,
+                fontSize: 18,
+                display: "flex",
+                alignItems: "center",
+              }}
+            >
+              <NavLink to="/login" color="#886863" style={{ paddingRight: 5 }}>
+                Login/Register
+              </NavLink>
+              <ImUser />
+            </div>
+          )}
           <DefaultButton
             onClick={handleOpenBasket}
             text="Open Basket"
@@ -127,6 +143,9 @@ export const ListOfProductsPage = () => {
           >
             <ProductCard
               product={p}
+              currentlySelected={
+                basketItems.filter((i) => i.id === p.id).length
+              }
               onAddProduct={() => {
                 setBasketItems([...basketItems, p]);
                 if (!isBasketOpen) {
@@ -134,26 +153,15 @@ export const ListOfProductsPage = () => {
                 }
               }}
               onRemoveProduct={() => {
-                if (basketMap.has(p.id)) {
-                  const item = { ...basketMap.get(p.id)! };
-                  if (item.count > 0) {
-                    item.count = item.count - 1;
-                    item.totalPrice = item.count * item.price;
-                    basketMap.set(p.id, item);
-                    setBasketItems((prevBasketItems) => {
-                      const updatedBasketItems = prevBasketItems.map(
-                        (prevItem) => {
-                          if (prevItem.id === item.id) {
-                            return item;
-                          }
-                          return prevItem;
-                        }
-                      );
-                      return updatedBasketItems.filter(
-                        (updatedItem) => updatedItem.count > 0
-                      );
-                    });
-                  }
+                const index = basketItems.indexOf(p);
+                if (index < 0) {
+                  // the item wasn't added yet
+                  return;
+                }
+                basketItems.splice(index, 1);
+                setBasketItems([...basketItems]);
+                if (!isBasketOpen) {
+                  setIsBasketOpen(true);
                 }
               }}
             />
@@ -165,10 +173,10 @@ export const ListOfProductsPage = () => {
     </div>
   );
 };
-const CategoryTitle = styled.div`
-  padding: 1em;
-  color: #886863;
-  font-family: Chilanka;
-  font-weight: bold;
-  font-size: 20px;
-`;
+// const CategoryTitle = styled.div`
+//   padding: 1em;
+//   color: #886863;
+//   font-family: Chilanka;
+//   font-weight: bold;
+//   font-size: 20px;
+// `;

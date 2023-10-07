@@ -4,24 +4,16 @@ import { InventoryProduct } from "../components/admin-page/Inventory";
 
 export const ProductCard: React.FC<{
   product: InventoryProduct;
+  currentlySelected: number;
   onAddProduct: (p: InventoryProduct) => void;
   onRemoveProduct: (p: InventoryProduct) => void;
-}> = ({ product, onAddProduct, onRemoveProduct }) => {
-  const [count, setCount] = useState(0);
+}> = ({ product, currentlySelected, onAddProduct, onRemoveProduct }) => {
+  const [count, setCount] = useState(currentlySelected);
   const handleCountChange = (event: any) => {
     const newCount = parseInt(event.target.value);
     setCount(newCount >= 0 ? newCount : 0);
   };
-  const handleClick = () => {
-    console.log("Button clicked!");
-  };
-  const [isClicked, setIsClicked] = useState(false);
-  const handleClickBtn = () => {
-    setIsClicked(true);
 
-    // Add your desired functionality when the button is clicked
-    // For example, you can perform an action or change some other state.
-  };
   return (
     <div className="product-card">
       <img
@@ -31,8 +23,10 @@ export const ProductCard: React.FC<{
       />
       <p className="product-card__name">{product.name}</p>
       <p className="product-card__description">{product.description}</p>
-      <p className="product-card__price">{product.price} $</p>
-      <button
+      <p className="product-card__price">
+        {product.available > 0 ? `${product.price} $` : "----"}
+      </p>
+      {/* <button
         className={`product-card__btn-wishlist ${isClicked ? "clicked" : ""}`}
         onClick={handleClickBtn}
       >
@@ -42,7 +36,7 @@ export const ProductCard: React.FC<{
             strokeWidth="2"
           />
         </svg>
-      </button>
+      </button> */}
       <div className="product-card__count" style={{ paddingBottom: "10px" }}>
         {product.available > 0 ? (
           <>
@@ -57,26 +51,30 @@ export const ProductCard: React.FC<{
             <input
               type="number"
               min="0"
-              value={count}
+              value={currentlySelected}
               onChange={handleCountChange}
-              style={{ width: "60px", textAlign: "center" }}
+              style={{
+                width: "50px",
+                textAlign: "center",
+                marginLeft: "5px",
+                marginRight: "5px",
+              }}
             />
             <button
               onClick={() => {
-                onAddProduct(product);
-                setCount(count + 1);
+                if (product.available > count) {
+                  onAddProduct(product);
+                  setCount(count + 1);
+                }
               }}
             >
               +
             </button>
           </>
         ) : (
-          <>Out of stock</>
+          <b>Out of stock</b>
         )}
       </div>
-      {/* <button onClick={onAddProduct}>+</button>
-
-      <button onClick={onRemoveProduct}>-</button> */}
     </div>
   );
 };

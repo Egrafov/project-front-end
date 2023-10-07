@@ -1,8 +1,7 @@
 import React, { useContext } from "react";
-import { ImUser, ImBin, ImHeart } from "react-icons/im";
+import { ImUser } from "react-icons/im";
 import { FaSearch, FaFacebook, FaInstagram } from "react-icons/fa";
-import { useId } from "@fluentui/react-hooks";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import "./styles.css";
 import { Title } from "./pages/AdminPage";
@@ -12,18 +11,9 @@ import { MyFooter } from "./components/MyFooter";
 import { UserContext } from "./Routes";
 initializeIcons();
 
-const calloutProps = { gapSpace: 0 };
-// The TooltipHost root uses display: inline by default.
-// If that's causing sizing issues or tooltip positioning issues, try overriding to inline-block.
-const hostStyles = {
-  root: { display: "inline-block" },
-};
-
 const Header = () => {
-  // axios.get("http://127.0.0.1:8080/products").then((s) => console.log(s));
   const loggedInUser = useContext(UserContext);
-  console.log("products loggedInUser");
-  console.log(loggedInUser);
+
   return (
     <header
       style={{
@@ -35,7 +25,6 @@ const Header = () => {
       <div
         style={{
           display: "flex",
-
           alignItems: "center",
         }}
       >
@@ -59,7 +48,14 @@ const Header = () => {
           {loggedInUser ? (
             <div>
               Hello {loggedInUser.firstName}
-              {loggedInUser && loggedInUser.isAdmin && " You're ADMIN !!!"}
+              {loggedInUser && loggedInUser.isAdmin && " You're ADMIN !!! " && (
+                <NavLink
+                  to={"/admin"}
+                  style={{ paddingLeft: 10, paddingRight: 5 }}
+                >
+                  Admin page
+                </NavLink>
+              )}
             </div>
           ) : (
             <>
@@ -113,8 +109,6 @@ export const SearchBar = () => {
 };
 
 const SecondaryNav = () => {
-  const navigate = useNavigate();
-
   return (
     <div>
       <nav
@@ -131,7 +125,6 @@ const SecondaryNav = () => {
             display: "flex",
             gap: "20px",
             alignItems: "center",
-
             padding: "0",
             margin: "0",
             fontFamily: "Segoe UI",
@@ -342,14 +335,7 @@ const CategoriesImage: React.FC<ImageProps> = ({ src, alt, style }) => {
   );
 };
 
-function openNewPage() {
-  //Replace "https://example.com" with the desired URL
-  window.open("http://localhost:3000/", "blank");
-}
-
 export const MyComponent = () => {
-  const tooltipId = useId("tooltip");
-
   return (
     <div
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
