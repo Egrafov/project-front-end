@@ -167,7 +167,6 @@ export const ListOfProductsPage: React.FC<{ onLogOut: () => void }> = ({
           </div>
         ))}
       </div>
-
       <MyFooter />
     </div>
   );
