@@ -4,11 +4,12 @@ import { FaSearch, FaFacebook, FaInstagram } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
 
 import "./styles.css";
-import { Title } from "./pages/AdminPage";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import styled from "styled-components";
 import { MyFooter } from "./components/MyFooter";
 import { UserContext } from "./Routes";
+import { MainTitle } from "./components/MainTitle";
+import { NavBar } from "./components/NavBar";
 initializeIcons();
 
 const Header = () => {
@@ -28,7 +29,7 @@ const Header = () => {
           alignItems: "center",
         }}
       >
-        <Title>GeliX</Title>
+        <MainTitle />
         <SearchBar />
         <ul
           style={{
@@ -85,7 +86,7 @@ const Header = () => {
           </a> */}
         </ul>
       </div>
-      <SecondaryNav />
+      <NavBar />
     </header>
   );
 };
@@ -104,64 +105,6 @@ export const SearchBar = () => {
         }}
       />
       <FaSearch style={{ color: "#886863" }} />
-    </div>
-  );
-};
-
-const SecondaryNav = () => {
-  return (
-    <div>
-      <nav
-        style={{
-          display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "center",
-          color: "#886863",
-        }}
-      >
-        <ul
-          style={{
-            listStyle: "none",
-            display: "flex",
-            gap: "20px",
-            alignItems: "center",
-            padding: "0",
-            margin: "0",
-            fontFamily: "Segoe UI",
-            fontSize: "16px",
-            fontWeight: "600",
-            color: "#886863",
-          }}
-        >
-          <NavLink to={"/products"} style={{ color: "#886863" }}>
-            Products
-          </NavLink>
-          <NavLink to={"/aboutUs"} style={{ color: "#886863" }}>
-            About us
-          </NavLink>
-          <NavLink
-            to="/contactUs"
-            title="Contact Us"
-            style={{ color: "#886863" }}
-          >
-            Contact us
-          </NavLink>
-          <a
-            rel="noreferrer"
-            target="_blank"
-            href="https://www.facebook.com/tanya.grafova"
-          >
-            <FaFacebook style={{ color: "blue" }} />
-          </a>
-          <a
-            rel="noreferrer"
-            target="_blank"
-            href="https://instagram.com/tetiana.grafova?igshid=MzRlODBiNWFlZA=="
-          >
-            <FaInstagram />
-          </a>
-        </ul>
-      </nav>
     </div>
   );
 };

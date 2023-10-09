@@ -1,20 +1,24 @@
-import { DefaultButton, Link, initializeIcons } from "@fluentui/react";
+import { DefaultButton } from "@fluentui/react";
 import { ProductCard } from "../ProductCard/ProductCard";
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { MyFooter } from "../components/MyFooter";
-import { SubTitle, SuccessMessage, Title } from "./AdminPage";
-import { FaSearch } from "react-icons/fa";
 import { SearchComponent } from "../components/SearchComponent";
-import { styled } from "styled-components";
 import { InventoryProduct } from "../components/admin-page/Inventory";
-import { Basket, BasketItem } from "../components/Basket";
+import { Basket } from "../components/Basket";
 import { NavLink } from "react-router-dom";
 import { UserContext } from "../Routes";
-import { ImUser } from "react-icons/im";
+import { MainTitle } from "../components/MainTitle";
+import { NavBar } from "../components/NavBar";
+import {
+  StyledLink,
+  defaultSecondaryButtonStyle,
+} from "../components/common/Styles";
+import { LoginLink } from "../components/LoginLink";
 
-export const ListOfProductsPage = () => {
-  // const [isSavedSuccess, setIsSavedSuccess] = useState(false);
+export const ListOfProductsPage: React.FC<{ onLogOut: () => void }> = ({
+  onLogOut,
+}) => {
   const loggedInUser = useContext(UserContext);
 
   const [inventory, setInventory] = useState<InventoryProduct[]>([]);
@@ -55,10 +59,6 @@ export const ListOfProductsPage = () => {
     setIsBasketOpen(false);
   };
 
-  const buttonStyle = {
-    root: { minWidth: "130px" },
-  };
-
   return (
     <div style={{ flexDirection: "column", justifyContent: "space-between" }}>
       <div
@@ -68,6 +68,7 @@ export const ListOfProductsPage = () => {
           justifyContent: "space-between",
           background: "#f3d3d8",
           padding: "10px",
+          paddingLeft: "0px",
           alignItems: "center",
         }}
       >
@@ -79,43 +80,41 @@ export const ListOfProductsPage = () => {
             alignItems: "center",
           }}
         >
-          <Title style={{ paddingRight: "20px" }}>Gelix</Title>
+          <MainTitle />
           <SearchComponent onSearchChange={onSearchChange} />
+          <NavBar />
         </div>
         <div
           style={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
+            gap: 8,
+            fontSize: 19,
           }}
         >
           {loggedInUser ? (
-            <div style={{ paddingLeft: 10, paddingRight: 15, fontSize: 18 }}>
+            <>
               Hello {loggedInUser.firstName}
               {loggedInUser.isAdmin && (
-                <NavLink to={"/admin"}>Admin page</NavLink>
+                <StyledLink>
+                  <NavLink to={"/admin"}>Admin page</NavLink>
+                </StyledLink>
               )}
-            </div>
+              <DefaultButton
+                iconProps={{ iconName: "SignOut" }}
+                onClick={onLogOut}
+                text="Sign out"
+                styles={{ root: { minWidth: "50px" } }}
+              />
+            </>
           ) : (
-            <div
-              style={{
-                paddingLeft: 10,
-                paddingRight: 15,
-                fontSize: 18,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <NavLink to="/login" color="#886863" style={{ paddingRight: 5 }}>
-                Login/Register
-              </NavLink>
-              <ImUser />
-            </div>
+            <LoginLink />
           )}
           <DefaultButton
             onClick={handleOpenBasket}
             text="Open Basket"
-            styles={buttonStyle}
+            styles={defaultSecondaryButtonStyle}
           />
         </div>
       </div>
@@ -173,10 +172,3 @@ export const ListOfProductsPage = () => {
     </div>
   );
 };
-// const CategoryTitle = styled.div`
-//   padding: 1em;
-//   color: #886863;
-//   font-family: Chilanka;
-//   font-weight: bold;
-//   font-size: 20px;
-// `;

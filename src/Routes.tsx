@@ -23,7 +23,12 @@ export const MainRoutes = () => {
     <UserContext.Provider value={loggedUser}>
       <Router>
         <Routes>
-          <Route path="/" element={<ListOfProductsPage />} />
+          <Route
+            path="/"
+            element={
+              <ListOfProductsPage onLogOut={() => setLoggedUser(null)} />
+            }
+          />
           <Route path="/admin" element={<AdminPage />} />
           <Route
             path="/login"

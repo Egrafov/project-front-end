@@ -1,13 +1,14 @@
 import { DefaultButton, IButtonStyles } from "@fluentui/react";
 import React, { useState } from "react";
 import styled from "styled-components";
-import { ErrorMessage, StyledDiv, SubTitle, SuccessMessage } from "./AdminPage";
+import { ErrorMessage, SubTitle, SuccessMessage } from "./AdminPage";
 import axios from "axios";
 import { MyFooter } from "../components/MyFooter";
 import bcrypt from "bcryptjs";
 import { useNavigate } from "react-router-dom";
 import { LoggedUser } from "../Routes";
 import { StyledInput } from "../components/common/Styles";
+import { MainTitle } from "../components/MainTitle";
 
 export interface User {
   password: string;
@@ -41,10 +42,11 @@ export const LoginPage: React.FC<{
   const navigate = useNavigate();
 
   return (
-    <div style={{ display: "flex", flexFlow: "column nowrap" }}>
-      {/* <div>Title</div> */}
+    <div style={{ display: "flex", flexFlow: "column", minHeight: "100vh" }}>
+      <MainTitle />
       <div
         style={{
+          flex: 1,
           display: "flex",
           justifyContent: "center",
           fontWeight: 600,

@@ -1,124 +1,45 @@
-import React, { useState } from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { Orders } from "../components/admin-page/Orders";
 import { Inventory } from "../components/admin-page/Inventory";
 import { CreateProduct } from "../components/admin-page/CreateProduct";
 import { NavLink } from "react-router-dom";
+import { MainTitle } from "../components/MainTitle";
+import { UserContext } from "../Routes";
+import { LoginLink } from "../components/LoginLink";
+import { StyledLink } from "../components/common/Styles";
 
 export const AdminPage = () => {
-  // const [iconNameOrder, setIconNameOrder] = useState<string>("ChevronDown");
-  // const [products, setProducts] = useState<Product[]>([]);
-  // const [id, setId] = useState<string>("");
-  // const [category, setCategory] = useState<string>("");
-  // const [name, setName] = useState<string>("");
-  // const [description, setDescription] = useState<string>("");
-  // const [image, setImage] = useState<string>("");
-  // const [price, setPrice] = useState<number>(0);
-  // const [count, setCount] = useState<number>(0);
-  // const [isCreatingProduct, setIsCreatingProduct] = useState(false);
-  // const [isSavedSuccess, setIsSavedSuccess] = useState(false);
-  // const [isProductCreated, setIsProductCreated] = useState(false);
-  // const [isShowInventory, setIsShowInventory] = useState(false);
-  // const [isShowOrders, setIsShowOrders] = useState(false);
-  // const [inventoryProducts, setInventoryProducts] = useState<
-  //   InventoryProduct[]
-  // >([]);
-  // const [orderDate, setOrderDate] = useState<Date>("");
-  // const [userName, setUserName] = useState<string>("");
-  // const [totalSum, setTotalSum] = useState<number>(0);
-  // const [address, setAddress] = useState<string>("");
-
-  // const addProduct = (e) => {
-  //   e.preventDefault();
-  //   const newProduct = {
-  //     name,
-  //     description,
-  //     image,
-  //     price,
-  //     count,
-  //   };
-  //   setProducts([...products, newProduct]);
-  //   // Clear the form inputs
-  //   setId("");
-  //   setCategory("");
-  //   setName("");
-  //   setDescription("");
-  //   setImage("");
-  //   // setPrice("");
-  //   // setCount("");
-  //   setIsCreatingProduct(false);
-  // };
-
-  // const addOrder = (e) => {
-  //   e.preventDefault();
-  //   const newOrder = {
-  //     orderDate,
-  //     userName,
-  //     totalSum,
-  //     address,
-  //   };
-  //   setOrders([...orders, newOrder]);
-
-  //   setOrderDate("");
-  //   setUserName("");
-  //   setTotalSum("");
-  //   setAddress("");
-  // };
+  const loggedInUser = useContext(UserContext);
+  const userHasAccess = loggedInUser?.isAdmin;
 
   return (
     <div>
-      <Wrapper>
-        <Title>Admin Page</Title>
-        <NavLink
-          to={"/"}
-          style={{
-            color: "#d69987",
-            fontSize: "16px",
-            fontWeight: "600",
-          }}
-        >
-          Shopping
-        </NavLink>
-      </Wrapper>
-      <CreateProduct />
-      <Inventory />
-      <Orders />
+      <TitleWrapper>
+        <MainTitle />
+        <StyledLink>
+          <NavLink to={"/"}>Shopping</NavLink>
+        </StyledLink>
+        {userHasAccess ? <></> : <LoginLink />}
+      </TitleWrapper>
+      {userHasAccess ? (
+        <>
+          <CreateProduct />
+          <Inventory />
+          <Orders />
+        </>
+      ) : (
+        <ErrorMessage style={{ fontSize: 25 }}>
+          You don't have access to this page
+        </ErrorMessage>
+      )}
     </div>
   );
 };
 
-export const Title = styled.div`
-  font-weight: bold;
-  font-size: 50px;
-  text-align: left;
-  color: #cb502e;
-  text-align: left;
-`;
-
-export const Wrapper = styled.section`
+const TitleWrapper = styled.section`
   padding: 1em;
   background: #f4f6f7;
-`;
-
-export const StyledDiv = styled.div`
-  color: rgb;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  flex: auto;
-  flex-wrap: wrap;
-  min-width: 100px;
-  max-width: 600px;
-  display: flex;
-  padding: 10;
-  justify-content: spaceEvenly;
-  align-items: selfEnd;
-  flex-grow: 10;
-  margin: 5px;
-  font-family: "Segoe UI", "Segoe UI Web (West European)", "Segoe UI",
-    -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  font-size: 14px;
-  font-weight: 600;
 `;
 
 export const SubTitle = styled.div`
@@ -130,17 +51,16 @@ export const SubTitle = styled.div`
   background: #f3d3d8;
 `;
 
-export const SuccessMessage = styled.div`
-  color: green;
+const Message = styled.div`
   margin-top: 20px;
-  margin-left: 60px;
   font-size: 14px;
   font-weight: 600;
 `;
 
-export const ErrorMessage = styled.div`
+export const SuccessMessage = styled(Message)`
+  color: green;
+`;
+
+export const ErrorMessage = styled(Message)`
   color: red;
-  margin-top: 20px;
-  font-size: 14px;
-  font-weight: 600;
 `;

@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { SubTitle, Title } from "./AdminPage";
+import { SubTitle } from "./AdminPage";
 import { MyFooter } from "../components/MyFooter";
+import { MainTitle } from "../components/MainTitle";
 
 export const AboutUsPage = () => (
-  <>
-    <Title>Gelix</Title>
+  <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+    <MainTitle />
     <SubTitle>About us</SubTitle>
     <div
       style={{
@@ -39,7 +40,7 @@ export const AboutUsPage = () => (
       </Text>
     </div>
     <MyFooter />
-  </>
+  </div>
 );
 
 export const Text = styled.div`
