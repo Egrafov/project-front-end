@@ -5,9 +5,9 @@ import { ErrorMessage, SubTitle, SuccessMessage } from "./AdminPage";
 import axios from "axios";
 import { MyFooter } from "../components/MyFooter";
 import bcrypt from "bcryptjs";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { LoggedUser } from "../Routes";
-import { StyledInput } from "../components/common/Styles";
+import { StyledInput, StyledLink } from "../components/common/Styles";
 import { MainTitle } from "../components/MainTitle";
 
 export interface User {
@@ -44,6 +44,10 @@ export const LoginPage: React.FC<{
   return (
     <div style={{ display: "flex", flexFlow: "column", minHeight: "100vh" }}>
       <MainTitle />
+      <SubTitle>About us</SubTitle>
+      <StyledLink>
+        <NavLink to={"/"}> Home page</NavLink>
+      </StyledLink>
       <div
         style={{
           flex: 1,

@@ -2,11 +2,17 @@ import styled from "styled-components";
 import { SubTitle } from "./AdminPage";
 import { MyFooter } from "../components/MyFooter";
 import { MainTitle } from "../components/MainTitle";
+import { NavLink } from "react-router-dom";
+import { StyledLink } from "../components/common/Styles";
 
 export const AboutUsPage = () => (
   <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
     <MainTitle />
     <SubTitle>About us</SubTitle>
+    <StyledLink>
+      <NavLink to={"/"}> Home page</NavLink>
+    </StyledLink>
+
     <div
       style={{
         display: "flex",

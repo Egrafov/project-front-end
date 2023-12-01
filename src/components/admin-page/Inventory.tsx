@@ -97,6 +97,7 @@ export const Inventory: React.FC = () => {
                         .delete(`http://localhost:8080/products/${item.id}`)
                         .then((response) => {
                           if (response.status === 204) {
+                            setInventory([]);
                             fetchInventory();
                             console.log("Product deleted successfully");
                           }

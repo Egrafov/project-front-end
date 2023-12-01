@@ -102,7 +102,7 @@ export const Basket: React.FC<{
         Total: {totalPrice.toFixed(2)} $
       </div>
       <DefaultButton
-        disabled={!loggedInUser}
+        disabled={!loggedInUser || basketList.length === 0}
         styles={buttonStyle}
         text="Place order"
         onClick={() => {
